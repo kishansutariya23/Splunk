@@ -1,0 +1,288 @@
+{
+	"visualizations": {
+		"viz_qZtwI9PZ": {
+			"type": "viz.line",
+			"dataSources": {
+				"primary": "ds_vGiTn0c2"
+			},
+			"title": "Sales by Genre"
+		},
+		"viz_ckydtobw": {
+			"type": "viz.pie",
+			"title": "NA Sales",
+			"dataSources": {
+				"primary": "ds_H038G8Ep"
+			},
+			"options": {
+				"chart.showPercent": true
+			}
+		},
+		"viz_iEKX4MgM": {
+			"type": "viz.pie",
+			"dataSources": {
+				"primary": "ds_Qyrph7GJ"
+			},
+			"title": "EU Sales",
+			"options": {
+				"chart.showPercent": true
+			}
+		},
+		"viz_G92IPUGU": {
+			"type": "viz.pie",
+			"dataSources": {
+				"primary": "ds_FteawZSu"
+			},
+			"title": "JP Sales",
+			"options": {
+				"chart.showPercent": true
+			}
+		},
+		"viz_H9p0dsYZ": {
+			"type": "viz.pie",
+			"dataSources": {
+				"primary": "ds_i398QtaH"
+			},
+			"title": "Global Sales",
+			"options": {
+				"chart.showPercent": true
+			}
+		},
+		"viz_QjDY7Tb9": {
+			"type": "splunk.table",
+			"options": {},
+			"dataSources": {
+				"primary": "ds_EkLKMXXC"
+			}
+		},
+		"viz_6xFNpzPw": {
+			"type": "viz.pie",
+			"options": {
+				"chart.showPercent": true
+			},
+			"dataSources": {
+				"primary": "ds_9fVS7QaN"
+			},
+			"title": "Other Sales"
+		},
+		"viz_UBzo4CQX": {
+			"type": "viz.line",
+			"dataSources": {
+				"primary": "ds_sAXoihZR"
+			},
+			"options": {
+				"legend.labelStyle.overflowMode": "ellipsisEnd",
+				"legend.placement": "top",
+				"chart.showDataLabels": "minmax"
+			},
+			"title": "Total Sales by Year"
+		},
+		"viz_x9FHR9UT": {
+			"type": "splunk.table",
+			"options": {},
+			"dataSources": {
+				"primary": "ds_z1OeYROJ"
+			}
+		}
+	},
+	"dataSources": {
+		"ds_IQHK095o": {
+			"type": "ds.search",
+			"options": {
+				"query": " source=\"vgsales.csv\" |    table Year | dedup Year | sort by Year"
+			},
+			"name": "year"
+		},
+		"ds_H038G8Ep": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" | search Year=$year$ |  table Genre NA_Sales | stats sum() by Genre \n"
+			},
+			"name": "NA"
+		},
+		"ds_Qyrph7GJ": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" | search Year=$year$ |  table Genre EU_Sales | stats sum() by Genre \n"
+			},
+			"name": "EU"
+		},
+		"ds_FteawZSu": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" | search Year=$year$ |  table Genre JP_Sales | stats sum() by Genre \n"
+			},
+			"name": "JP"
+		},
+		"ds_i398QtaH": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" | search Year=$year$ |  table Genre Global_Sales | stats sum() by Genre \n"
+			},
+			"name": "Global"
+		},
+		"ds_vGiTn0c2": {
+			"type": "ds.search",
+			"options": {
+				"query": "    source=\"vgsales.csv\" | \nsearch Year=$year$| table Genre EU_Sales JP_Sales NA_Sales| stats sum() by Genre "
+			},
+			"name": "Sales Line"
+		},
+		"ds_EkLKMXXC": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" |    table   Platform | stats count by Platform | sort by count desc"
+			},
+			"name": "platform count"
+		},
+		"ds_9fVS7QaN": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" | search Year=$year$ |  table Genre Other_Sales | stats sum() by Genre \n"
+			},
+			"name": "Other Sale"
+		},
+		"ds_sAXoihZR": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" |  table NA_Sales EU_Sales JP_Sales Year | stats sum() by Year"
+			},
+			"name": "Year By Sales"
+		},
+		"ds_z1OeYROJ": {
+			"type": "ds.search",
+			"options": {
+				"query": "source=\"vgsales.csv\" |  table  Publisher | stats count by Publisher| sort by count desc"
+			},
+			"name": "Publisher count"
+		}
+	},
+	"defaults": {
+		"dataSources": {
+			"ds.search": {
+				"options": {
+					"queryParameters": {
+						"latest": "$global_time.latest$",
+						"earliest": "$global_time.earliest$"
+					}
+				}
+			}
+		}
+	},
+	"inputs": {
+		"input_i9WbkHnh": {
+			"options": {
+				"items": [],
+				"defaultValue": "*",
+				"token": "year"
+			},
+			"dataSources": {
+				"primary": "ds_IQHK095o"
+			},
+			"title": "Year",
+			"type": "input.dropdown"
+		}
+	},
+	"layout": {
+		"type": "absolute",
+		"options": {
+			"display": "auto-scale"
+		},
+		"structure": [
+			{
+				"item": "viz_qZtwI9PZ",
+				"type": "block",
+				"position": {
+					"x": 320,
+					"y": 10,
+					"w": 850,
+					"h": 200
+				}
+			},
+			{
+				"item": "viz_ckydtobw",
+				"type": "block",
+				"position": {
+					"x": 10,
+					"y": 670,
+					"w": 300,
+					"h": 200
+				}
+			},
+			{
+				"item": "viz_iEKX4MgM",
+				"type": "block",
+				"position": {
+					"x": 10,
+					"y": 230,
+					"w": 300,
+					"h": 200
+				}
+			},
+			{
+				"item": "viz_G92IPUGU",
+				"type": "block",
+				"position": {
+					"x": 10,
+					"y": 450,
+					"w": 300,
+					"h": 200
+				}
+			},
+			{
+				"item": "viz_H9p0dsYZ",
+				"type": "block",
+				"position": {
+					"x": 10,
+					"y": 10,
+					"w": 300,
+					"h": 200
+				}
+			},
+			{
+				"item": "viz_QjDY7Tb9",
+				"type": "block",
+				"position": {
+					"x": 320,
+					"y": 230,
+					"w": 240,
+					"h": 420
+				}
+			},
+			{
+				"item": "viz_6xFNpzPw",
+				"type": "block",
+				"position": {
+					"x": 320,
+					"y": 670,
+					"w": 300,
+					"h": 200
+				}
+			},
+			{
+				"item": "viz_UBzo4CQX",
+				"type": "block",
+				"position": {
+					"x": 570,
+					"y": 230,
+					"w": 600,
+					"h": 420
+				}
+			},
+			{
+				"item": "viz_x9FHR9UT",
+				"type": "block",
+				"position": {
+					"x": 640,
+					"y": 670,
+					"w": 320,
+					"h": 200
+				}
+			}
+		],
+		"globalInputs": [
+			"input_i9WbkHnh"
+		]
+	},
+	"description": "",
+	"title": "VG_Sales"
+}
